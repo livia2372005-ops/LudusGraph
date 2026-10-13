@@ -13,6 +13,7 @@ export interface CanvasState {
   setSelectedFrameId: (id: string | null) => void;
   addFrame: (name: string, width?: number, height?: number) => void;
   loadDocument: (doc: { frames: FrameNode[]; wires: FlowWire[] }) => void;
+  updateElementInfo: (frameId: string, elementId: string, name: string, description: string) => void;
 }
 
 const initialFrames: FrameNode[] = [
@@ -22,7 +23,8 @@ const initialFrames: FrameNode[] = [
     world_transform: { x: 100, y: 100, width: 640, height: 360 }, // Scaled down for canvas display preview
     root_element: {
       id: "cnt_root_title",
-      name: "RootContainer",
+      name: "Khung gốc màn hình Title",
+      description: "Hộp chứa bao trọn toàn bộ màn hình Title, nền tối màu phong cách Dungeon",
       type: "container",
       layout: {
         anchor_preset: "full_rect",
@@ -33,7 +35,8 @@ const initialFrames: FrameNode[] = [
       children: [
         {
           id: "lbl_game_title",
-          name: "GameTitleLabel",
+          name: "Tiêu đề trò chơi (Game Title)",
+          description: "Hiển thị tên game nổi bật ở góc trên, căn giữa. Phông chữ lớn, viền vàng kim, có hiệu ứng phát sáng nhẹ.",
           type: "label",
           layout: {
             anchor_preset: "center_top",
@@ -50,7 +53,8 @@ const initialFrames: FrameNode[] = [
         },
         {
           id: "btn_start",
-          name: "StartGameButton",
+          name: "Nút Bắt đầu chơi (Start Button)",
+          description: "Nút bấm hành động chính (CTA) ở trung tâm. Nhấn vào sẽ kích hoạt dây nối chuyển sang màn hình Chọn nhân vật.",
           type: "button",
           layout: {
             anchor_preset: "center",
@@ -61,7 +65,7 @@ const initialFrames: FrameNode[] = [
             border_color: "#059669",
             border_width: 2,
             corner_radius: 8,
-            text_content: "START GAME",
+            text_content: "BẮT ĐẦU CHƠI",
             font_size: 14,
             text_align: "center",
           },
@@ -70,7 +74,8 @@ const initialFrames: FrameNode[] = [
         },
         {
           id: "btn_settings",
-          name: "SettingsButton",
+          name: "Nút Cài đặt (Settings Button)",
+          description: "Nút mở popup cài đặt âm thanh, hình ảnh và điều khiển. Nằm dưới nút Bắt đầu.",
           type: "button",
           layout: {
             anchor_preset: "center",
@@ -81,7 +86,7 @@ const initialFrames: FrameNode[] = [
             border_color: "#4b5563",
             border_width: 1,
             corner_radius: 8,
-            text_content: "SETTINGS",
+            text_content: "CÀI ĐẶT",
             font_size: 13,
             text_align: "center",
           },
@@ -97,7 +102,8 @@ const initialFrames: FrameNode[] = [
     world_transform: { x: 880, y: 100, width: 640, height: 360 },
     root_element: {
       id: "cnt_root_char",
-      name: "RootContainer",
+      name: "Khung gốc Chọn nhân vật",
+      description: "Màn hình lựa chọn lớp nhân vật trước khi bước vào hầm ngục",
       type: "container",
       layout: {
         anchor_preset: "full_rect",
@@ -108,14 +114,15 @@ const initialFrames: FrameNode[] = [
       children: [
         {
           id: "lbl_char_title",
-          name: "SelectCharacterLabel",
+          name: "Tiêu đề Chọn anh hùng",
+          description: "Dòng chữ tiêu đề 'CHỌN ANH HÙNG', căn trên, kèm thông tin gợi ý lựa chọn",
           type: "label",
           layout: {
             anchor_preset: "center_top",
             offsets: { left: -140, top: 30, right: 140, bottom: 70 },
           },
           visual: {
-            text_content: "SELECT HERO",
+            text_content: "CHỌN ANH HÙNG",
             font_size: 20,
             text_align: "center",
           },
@@ -235,5 +242,28 @@ export const useCanvasStore = create<CanvasState>((set, get) => ({
     }));
 
     set({ nodes, edges });
+  },
+
+  updateElementInfo: (frameId, elementId, name, description) => {
+    set({
+      nodes: get().nodes.map((node) => {
+        if (node.id !== frameId) return node;
+        const frame = JSON.parse(JSON.stringify(node.data.frame)) as FrameNode;
+        const updateRecursive = (el: any): any => {
+          if (el.id === elementId) {
+            return { ...el, name, description };
+          }
+          if (el.children) {
+            el.children = el.children.map(updateRecursive);
+          }
+          return el;
+        };
+        frame.root_element = updateRecursive(frame.root_element);
+        return {
+          ...node,
+          data: { ...node.data, frame },
+        };
+      }),
+    });
   },
 }));

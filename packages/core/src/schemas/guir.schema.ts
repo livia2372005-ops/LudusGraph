@@ -65,10 +65,11 @@ export const UIElementSchema: z.ZodType<any> = z.lazy(() =>
   z.object({
     id: z.string().min(1, "ID phần tử không được để trống"),
     name: z.string().min(1, "Tên phần tử không được để trống"),
+    description: z.string().optional().default(""), // Miêu tả chi tiết bổ trợ cho tên
     type: UIElementTypeSchema,
     layout: UILayoutSchema,
     visual: UIVisualSchema.optional(),
-    semantics: UISemanticsSchema,
+    semantics: UISemanticsSchema.optional().default({ role: "ui_element", intent: "generic" }),
     children: z.array(UIElementSchema).optional().default([]),
   })
 );

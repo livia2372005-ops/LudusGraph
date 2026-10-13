@@ -81,11 +81,12 @@ export interface UISemantics {
 
 export interface UIElement {
   id: string;
-  name: string;
+  name: string; // Tên: định nghĩa nó là gì (VD: "Thanh máu", "Nút bắt đầu")
+  description?: string; // Miêu tả chi tiết: thông tin bổ trợ về chức năng, hành vi, hiển thị
   type: UIElementType;
   layout: UILayout;
   visual?: UIVisual;
-  semantics: UISemantics;
+  semantics?: UISemantics;
   children?: UIElement[];
 }
 
