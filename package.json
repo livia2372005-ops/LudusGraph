@@ -1,0 +1,27 @@
+{
+  "name": "ludusgraph-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Agent-Native Game UI Layout & Statechart Intermediate Representation Platform",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "dev:web": "npm run dev --workspace=@ludusgraph/web",
+    "dev:sync": "npm run dev --workspace=@ludusgraph/sync-server",
+    "dev:mcp": "npm run dev --workspace=@ludusgraph/mcp-server",
+    "clean": "npm run clean --workspaces --if-present"
+  },
+  "keywords": [
+    "game-ui",
+    "mcp",
+    "statecharts",
+    "react-flow",
+    "ai-agents",
+    "guir"
+  ],
+  "author": "livia2372005-ops",
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@ludusgraph/web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Infinite Web Canvas editor for LudusGraph built with React Flow and Scaled Frame Viewports",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@xyflow/react": "^12.3.6",
+    "lucide-react": "^0.441.0",
+    "zustand": "^4.5.5",
+    "@ludusgraph/core": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.3"
+  },
+  "license": "MIT"
+}
